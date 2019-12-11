@@ -27,6 +27,20 @@ rtm.on('message', event => {
     }
 
     console.log(`(channel:${event.channel}) ${event.user} said: ${event.text}`);
+
+    const text = event.text;
+    const groups = text.match(new RegExp(config.triggerName + "야?[^\w\d\s|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*", "gi"));
+    // console.log(groups, workspace.triggerName);
+
+    if (!groups || groups.length < 1) {
+        return;
+    }
+
+    if (groups[0] === text) {
+        const answers = ["네?", "왜요?", "부르셨나요?", "네!"];
+        rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+        return;
+    }
 });
 
 const listen = (req, res) => {
