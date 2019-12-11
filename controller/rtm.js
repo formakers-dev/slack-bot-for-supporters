@@ -14,7 +14,14 @@ rtm.on('authenticated', rtmStartData => {
 
 rtm.on('team_join', event => {
     const user = event.user;
-    const greeting_message = user.profile.display_name + "님, 반갑습니다! 😍️\n포메스 슬랙에 들어오신 것을 환영해요~!🎉";
+    const greeting_message = user.profile.display_name + "님, 반갑습니다! 😍️" +
+        "\n포메스 슬랙에 들어오신 것을 환영해요!🎉" +
+        "\n저는 약간 모자르지만 착한 포메스 봇에요ㅎㅎ 포메스 슬랙을 잘 사용하실 수 있게 도와드리고 있답니다! 🤘🏻" +
+        "\n" +
+        "\n앞으로 혹시 제가 필요하시게 되면 `포메스` 나 `포메스야` 라고 불러주세요!" +
+        "\n자세한 사용법은 `포메스 도움말` 이라고 적어주시면 확인해보실 수 있어요!" +
+        "\n" +
+        "\n그럼, 포메스 슬랙에서 즐거운 시간 보내시길 바래요! 🙌🏻";
 
     console.log(`${user.id}(${user.profile.display_name}) joined team`);
 
