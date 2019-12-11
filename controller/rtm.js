@@ -61,7 +61,7 @@ rtm.on('message', event => {
             "\n포메스 봇 사용법을 알려드릴게요! 🤗" +
             "\n" +
             "\n1️⃣ 지금처럼 제가 필요하실땐 `포메스` 나 `포메스야` 라고 불러주세요." +
-            "\n2️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : [노션링크]" ];
+            "\n2️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : " + config.helpPageUrl ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     } else if (text.includes("진행중 테스트 링크")) {
         BetaTestService.getValidBetaTestSurveyLinks()
