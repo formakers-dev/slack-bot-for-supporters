@@ -46,9 +46,9 @@ rtm.on('message', event => {
 const listen = (req, res) => {
     if (!rtm.connected) {
         rtm.start();
-        res.send("포메스 출동! 🚨");
+        res.send(config.triggerName + " 출동! 🚨");
     } else {
-        res.send("포메스는 이미 연결되어있어요! ☺️");
+        res.send(config.triggerName + "는 이미 연결되어있어요! ☺️");
     }
 };
 
