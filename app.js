@@ -2,6 +2,9 @@ const express = require('express');
 const logger = require('morgan');
 const http = require('http');
 const port = require('./config').port;
+const db = require('./db');
+db.init();
+
 const rtmController = require('./controller/rtm');
 
 const app = express();
