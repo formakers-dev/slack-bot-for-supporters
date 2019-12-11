@@ -19,6 +19,10 @@ rtm.on('team_join', event => {
         .catch(err => console.log(err));
 });
 
+rtm.on('message', event => {
+    console.log(event);
+});
+
 const listen = (req, res) => {
     if (!rtm.connected) {
         rtm.start();
