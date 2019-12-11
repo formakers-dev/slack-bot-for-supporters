@@ -13,9 +13,14 @@ rtm.on('authenticated', rtmStartData => {
 });
 
 rtm.on('team_join', event => {
-    web.im.open({user: event.user})
+    const user = event.user;
+    const greeting_message = user.profile.display_name + "님, 반갑습니다! 😍️\n포메스 슬랙에 들어오신 것을 환영해요~!🎉";
+
+    console.log(`${user.id}(${user.profile.display_name}) joined team`);
+
+    web.im.open({user: user.id})
         .then(result => {
-            rtm.sendMessage(config.messages.greeting, result.channel.id);
+            rtm.sendMessage(greeting_message, result.channel.id);
         })
         .catch(err => console.log(err));
 });
