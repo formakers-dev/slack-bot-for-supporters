@@ -41,6 +41,23 @@ rtm.on('message', event => {
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
         return;
     }
+
+    if (text.includes("도움말")) {
+        const answers = [
+            "안녕하세요! 약간 모자르지만 착한 포메스 봇 입니다." +
+            "\n포메스 봇 사용법을 알려드릴게요! 🤗" +
+            "\n" +
+            "\n1️⃣ 지금처럼 제가 필요하실땐 `포메스` 나 `포메스야` 라고 불러주세요." +
+            "\n2️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : [노션링크]" ];
+        rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+    } else {
+        const answers = [
+            "제가 잘 모르는 내용이에요 😭",
+            "뭐라구요?", "못 알아들었어요ㅠㅠ",
+            "잘 모르겠어요ㅠㅠ\n제 사용법이 궁금하시면 `포메스 도움말` 이라고 말씀해보세요!"
+        ];
+        rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+    }
 });
 
 const listen = (req, res) => {
