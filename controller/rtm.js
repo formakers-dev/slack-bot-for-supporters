@@ -20,7 +20,13 @@ rtm.on('team_join', event => {
 });
 
 rtm.on('message', event => {
-    console.log(event);
+    // Skip messages that are from a bot or my own user ID
+    if ((event.subtype && event.subtype === 'bot_message') ||
+        (!event.subtype && event.user === rtm.activeUserId)) {
+        return;
+    }
+
+    console.log(`(channel:${event.channel}) ${event.user} said: ${event.text}`);
 });
 
 const listen = (req, res) => {
