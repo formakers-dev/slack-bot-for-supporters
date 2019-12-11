@@ -1,6 +1,7 @@
 const {RTMClient} = require('@slack/rtm-api');
 const {WebClient} = require('@slack/web-api');
 const config = require('../config');
+const BetaTestService = require('../services/beta-tests');
 
 const botApiToken = config.slackApiToken;
 const rtm = new RTMClient(botApiToken);
@@ -50,6 +51,32 @@ rtm.on('message', event => {
             "\n1️⃣ 지금처럼 제가 필요하실땐 `포메스` 나 `포메스야` 라고 불러주세요." +
             "\n2️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : [노션링크]" ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+    } else if (text.includes("진행중 테스트 링크")) {
+        BetaTestService.getValidBetaTestSurveyLinks()
+            .then(async (betaTests) => {
+                const message = "넵! 현재 진행중인 테스트의 설문 링크를 보내드릴게요! 🤘🏻 PC에서 편하게 작성하즈아!" +
+                    "\n\n" +
+                    "\n🚨 아래 주의사항만 잘 지켜주시면 감사드리겠슴다!" +
+                    "\n1️⃣ 이건 여러분들께만 특별히 제공되는 것이니 꼭 본인만 쓰시길 바래요!" +
+                    "\n2️⃣ 설문의 맨 마지막 문항의 이메일을 꼭 *포메스 가입 이메일* 로 적어주셔야 활동 기록에 카운팅이 됩니다!" +
+                    "\n\n\n".concat(betaTests.map(betaTest => {
+                        const chat = "---------------------------------------------------------------" +
+                            "\n*🕹 테스트 제목 : " + betaTest.title + "*";
+                        const missionsChat = betaTest.missionItems.map(missionItem => {
+                            return "👉🏻 미션 제목 : " + missionItem.title + "\n" + missionItem.action;
+                        }).join("\n\n");
+                        return chat + "\n" + missionsChat;
+                    }).join("\n\n\n"));
+
+                const reply = rtm.sendMessage(message, event.channel);
+                console.log(reply);
+            }).catch(async (err) => {
+                console.error(err);
+                const reply = await rtm.sendMessage(
+                    "으헉😭 뭔가 오류가 발생한 것 같아요!" +
+                    "\n담당자들한테 얼른 고쳐달라고 할게요! 조금만 기다려주세요🙏", event.channel);
+                console.log(reply)
+        });
     } else {
         const answers = [
             "제가 잘 모르는 내용이에요 😭",
