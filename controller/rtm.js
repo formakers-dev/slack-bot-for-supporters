@@ -63,7 +63,7 @@ rtm.on('message', event => {
             "\n1️⃣ 지금처럼 제가 필요하실땐 `포메스` 나 `포메스야` 라고 불러주세요." +
             "\n2️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : " + config.helpPageUrl ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
-    } else if (text.includes("진행중 테스트 링크")) {
+    } else if (text.includes("테스트 링크")) {
         BetaTestService.getValidBetaTestSurveyLinks()
             .then(async (betaTests) => {
                 const message = "넵! 현재 진행중인 테스트의 설문 링크를 보내드릴게요! 🤘🏻 PC에서 편하게 작성하즈아!" +
