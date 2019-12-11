@@ -64,6 +64,7 @@ const listen = (req, res) => {
     if (!rtm.connected) {
         rtm.start();
         res.send(config.triggerName + " 출동! 🚨");
+        console.log("[RTM listen] start");
     } else {
         res.send(config.triggerName + "는 이미 연결되어있어요! ☺️");
     }
