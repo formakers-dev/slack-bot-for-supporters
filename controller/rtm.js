@@ -16,10 +16,10 @@ rtm.on('team_join', event => {
     const user = event.user;
     const greeting_message = user.profile.display_name + "님, 반갑습니다! 😍️" +
         "\n포메스 슬랙에 들어오신 것을 환영해요!🎉" +
-        "\n저는 약간 모자르지만 착한 포메스봇에요ㅎㅎ 포메스 슬랙을 잘 사용하실 수 있게 도와드리고 있답니다! 🤘🏻" +
+        "\n저는 약간 모자르지만 착한 " + config.triggerName +"이에요ㅎㅎ 포메스 슬랙을 잘 사용하실 수 있게 도와드리고 있답니다! 🤘🏻" +
         "\n" +
-        "\n앞으로 혹시 제가 필요하시게 되면 `포메스봇` 이라고 불러주세요!" +
-        "\n자세한 사용법은 `포메스 도움말` 이라고 적어주시면 확인해보실 수 있어요!" +
+        "\n앞으로 혹시 제가 필요하시게 되면 `" + config.triggerName + "` 이라고 불러주세요!" +
+        "\n자세한 사용법은 `" + config.triggerName + " 도움말` 이라고 적어주시면 확인해보실 수 있어요!" +
         "\n" +
         "\n그럼, 포메스 슬랙에서 즐거운 시간 보내시길 바래요! 🙌🏻";
 
@@ -61,13 +61,15 @@ rtm.on('message', event => {
 
     if (text.includes("도움말")) {
         const answers = [
-            "안녕하세요! 약간 모자르지만 착한 포메스봇 입니다." +
-            "\n포메스봇 사용법을 알려드릴게요! 🤗" +
+            "안녕하세요! 약간 모자르지만 착한 " + config.triggerName+ " 입니다." +
+            "\n" + config.triggerName + " 사용법을 알려드릴게요! 🤗" +
             "\n" +
-            "\n1️⃣ 지금처럼 제가 필요하실땐 `포메스봇` 이라고 불러주세요." +
+            "\n1️⃣ 지금처럼 제가 필요하실땐 `" + config.triggerName + "` 이라고 불러주세요." +
             "\n2️⃣ 현재 지원하는 명령어는 다음과 같아요 : `도움말`, `테스트 링크`" +
             "\n        저를 불러주시면서 이 명령어들을 같이 적어주시면 되어요!" +
-            "\n        💬 예시 : `포메스봇아 테스트 링크 알려줘`, `포메스봇 도움말`, `포메스봇~ 도움말이나 좀 가져와봐` 등..." +
+            "\n        💬 예시 : `" + config.triggerName + "아 테스트 링크 알려줘`, " +
+                                "`" + config.triggerName + " 도움말`, " +
+                                "`" + config.triggerName + "~ 도움말이나 좀 가져와봐` 등..." +
             "\n3️⃣ 개인적으로 답변을 듣고싶으다면 저에게 직접 다이렉트 메세지(DM)을 보내주셔도 됩니다!" +
             "\n4️⃣ 기타 자세한 사용법은 이 링크에서 확인해주세요 : " + config.helpPageUrl ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
@@ -111,7 +113,7 @@ rtm.on('message', event => {
         const answers = [
             "제가 잘 모르는 내용이에요 😭",
             "뭐라구요?", "못 알아들었어요ㅠㅠ",
-            "잘 모르겠어요ㅠㅠ\n제 사용법이 궁금하시면 `포메스 도움말` 이라고 말씀해보세요!"
+            "잘 모르겠어요ㅠㅠ\n제 사용법이 궁금하시면 `" + config.triggerName + " 도움말` 이라고 말씀해보세요!"
         ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     }
