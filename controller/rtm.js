@@ -46,7 +46,7 @@ rtm.on('message', event => {
     console.log(`(channel:${event.channel}) ${event.user} said: ${event.text}`);
 
     const text = event.text;
-    const groups = text.split(" ")[0].match(new RegExp(config.triggerName + "야?[^\w\d\s|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*", "gi"));
+    const groups = text.split(" ")[0].match(new RegExp(config.triggerName + "아?[^\w\d\s|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*", "gi"));
     // console.log(groups, workspace.triggerName);
 
     if (!groups || groups.length < 1) {
