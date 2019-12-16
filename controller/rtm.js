@@ -46,7 +46,7 @@ rtm.on('message', event => {
     console.log(`(channel:${event.channel}) ${event.user} said: ${event.text}`);
 
     const text = event.text;
-    const groups = text.split(" ")[0].match(new RegExp(config.triggerName + "아?[^\w\d\s|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*", "gi"));
+    const groups = text.match(new RegExp(config.triggerName + "아?[^\w\d\s|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*", "gi"));
     // console.log(groups, workspace.triggerName);
 
     if (!groups || groups.length < 1) {
@@ -113,6 +113,11 @@ rtm.on('message', event => {
         const answers = [
             "안녕하새오! 포메스 애오! 왈왈! 🐶\n아직 조금 모자르지만 차캐오! 앞으로 더 잘할개오! 왈왈!",
             "네! 안녕하세요! 🐶", "🐶 안녕하새오!", "🐶 멍멍! 반갑다멍!", ":wave: 안녕!", "안뇽! :wave:"
+        ];
+        rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+    } else if (text.match(/고마워[요]?/) || text.match(/고맙[다|습니다|슴다]?/)) {
+        const answers = [
+            "별말씀을요 :-D", "헤헤 더 열시미 히겠다멍!", "뿌듯하다멍! 🐶", "내가 더 고맙다멍! 🐶"
         ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     } else {
