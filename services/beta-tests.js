@@ -40,6 +40,27 @@ const getValidBetaTestSurveyLinks = () => {
     ]);
 };
 
+const getCompletedList = (openDate, closeDate) => {
+    return BetaTests.aggregate([
+        { $match: {$and: [
+                    { closeDate: { $gte: openDate } },
+                    { closeDate: { $lte: closeDate } },
+                    { title: {$regex: '게임 테스트'} },
+                ] }
+        },
+        { $unwind: "$missions" },
+        { $unwind: "$missions.items"},
+        {
+            $group: {
+                _id: "$_id",
+                title: {$first: "$title"},
+                completedUserIds: {$push: "$missions.items.completedUserIds"}
+            }
+        }
+    ])
+};
+
 module.exports = {
     getValidBetaTestSurveyLinks,
+    getCompletedList,
 };

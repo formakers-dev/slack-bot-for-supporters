@@ -7,6 +7,7 @@ db.init();
 
 const rtmController = require('./controller/rtm');
 const slackController = require('./controller/slack');
+const groupController = require('./controller/group');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/', rtmController.listen);
 app.get('/channels/:channel/members', slackController.getMembersInChannel);
+app.get('/groups/:group/completed-list', groupController.getCompletedList);
 
 http.createServer(app).listen(port, () => {
     console.log('Express App on http port ' + port);
