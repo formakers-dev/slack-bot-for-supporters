@@ -61,6 +61,8 @@ rtm.on('message', event => {
 
     const answer_thanks =  ["별말씀을요 :-D", "헤헤 더 열시미 히겠다멍!", "뿌듯하다멍! 🐶", "헤헤 감사해여", "ㅎㅎ 감사하다멍! 🐶"];
     const answer_happy = [ "히히히 조으다멍!", "헤헤헤 😆", "신난다멍!!! :fast-parrot:"];
+
+    // TODO : 리팩토링 하자
     if (text.includes("도움말")) {
         const answers = [
             "안녕하세요! 약간 모자르지만 착한 " + config.triggerName+ " 입니다." +
