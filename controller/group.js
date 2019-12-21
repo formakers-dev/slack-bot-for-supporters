@@ -227,6 +227,7 @@ const getCompletedList = (req, res) => {
 
   BetaTestService.getCompletedList(startDate, endDate)
       .then(betaTests => {
+          const currentTime = new Date();
           betaTests = betaTests.map(betaTest => {
               betaTest.completedUserIds = betaTest.completedUserIds.reduce((result, userIds) => {
                   return result.filter(ele => userIds.includes(ele));
@@ -255,17 +256,22 @@ const getCompletedList = (req, res) => {
               'td.content { text-align: center }' +
               'td.x { background-color: #ffdede }' +
               '</style>' +
+              '<body>' +
+              '<strong>📝 포메스 서포터즈 2기 테스트 참여 현황</strong>' +
+              ' - ⏰ ' + currentTime.getFullYear() + '년 ' + currentTime.getMonth() + '월 ' + currentTime.getDate() + '일 '
+              + currentTime.getHours() + '시 ' + currentTime.getMinutes() + '분 ' + currentTime.getSeconds() + '초 기준' +
               '<table>' +
               '<thead>' +
               '<tr>' +
               '<th></th>' +
-               titles.join('') +
+              titles.join('') +
               '</tr>' +
               '</thead>' +
               '<tbody>' +
               userCompletedList.join('') +
               '</tbody>' +
-              '</table>';
+              '</table>' +
+              '</body>';
 
           res.send(response);
       }).catch(err => res.send(err));
