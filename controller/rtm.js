@@ -59,6 +59,8 @@ rtm.on('message', event => {
         return;
     }
 
+    const answer_thanks =  ["별말씀을요 :-D", "헤헤 더 열시미 히겠다멍!", "뿌듯하다멍! 🐶", "헤헤 감사해여", "ㅎㅎ 감사하다멍! 🐶"];
+    const answer_happy = [ "히히히 조으다멍!", "헤헤헤 😆", "신난다멍!!! :fast-parrot:"];
     if (text.includes("도움말")) {
         const answers = [
             "안녕하세요! 약간 모자르지만 착한 " + config.triggerName+ " 입니다." +
@@ -116,9 +118,10 @@ rtm.on('message', event => {
         ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     } else if (text.match(/고마워[요]?/) || text.match(/고맙[다|습니다|슴다]?/)) {
-        const answers = [
-            "별말씀을요 :-D", "헤헤 더 열시미 히겠다멍!", "뿌듯하다멍! 🐶", "내가 더 고맙다멍! 🐶"
-        ];
+        const answers = [ "내가 더 고맙다멍! 🐶" ].concat(answer_thanks);
+        rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
+    } else if (text.match(/[귀|기]여[워|웡|우|어][요]?/) || text.match(/[귀|기][욥|엽|요미]/)) {
+        const answers = [].concat(answer_thanks).concat(answer_happy);
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     } else {
         const answers = [
