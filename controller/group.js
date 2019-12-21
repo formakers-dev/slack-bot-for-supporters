@@ -243,7 +243,7 @@ const getCompletedList = (req, res) => {
           const titles = betaTests.map(betaTest => '<th>' + betaTest.title.replace(' 게임 테스트', '') + '</th>');
           const userCompletedList = users.map(user => {
               const result = '<tr>' + '<th>' + user.nickName + '</th>';
-              return result + betaTests.map(betaTest => '<td>' + (betaTest.completedUserIds.includes(user.userId) ? 'O' : 'X') + '</td>').join() + '</tr>'
+              return result + betaTests.map(betaTest => '<td>' + (betaTest.completedUserIds.includes(user.userId) ? 'O' : 'X') + '</td>').join('') + '</tr>'
           });
           const response = '<style>' +
               'table, th, td {' +
@@ -254,11 +254,11 @@ const getCompletedList = (req, res) => {
               '<thead>' +
               '<tr>' +
               '<th></th>' +
-               titles.join() +
+               titles.join('') +
               '</tr>' +
               '</thead>' +
               '<tbody>' +
-              userCompletedList.join() +
+              userCompletedList.join('') +
               '</tbody>' +
               '</table>';
 
