@@ -243,12 +243,16 @@ const getCompletedList = (req, res) => {
           const titles = betaTests.map(betaTest => '<th>' + betaTest.title.replace(' 게임 테스트', '') + '</th>');
           const userCompletedList = users.map(user => {
               const result = '<tr>' + '<th>' + user.nickName + '</th>';
-              return result + betaTests.map(betaTest => '<td>' + (betaTest.completedUserIds.includes(user.userId) ? 'O' : 'X') + '</td>').join('') + '</tr>'
+              return result + betaTests.map(betaTest => {
+                  const isCompleted = betaTest.completedUserIds.includes(user.userId);
+                  return '<td' + (isCompleted ? '' : ' class="x"') + '>' + (isCompleted ? 'O' : 'X') + '</td>';
+              }).join('') + '</tr>'
           });
           const response = '<style>' +
-              'table, th, td {' +
-              '        border: 1px solid #bcbcbc;' +
-              '      }' +
+              'table { border-collapse: collapse; text-align: left; line-height: 1.5; margin : 20px 10px; }' +
+              'th { padding: 5px; font-weight: bold; vertical-align: top; border: 1px solid #808080; }' +
+              'td { padding: 5px; vertical-align: top; border: 1px solid #808080; }' +
+              'td.x { background-color: lightpink }' +
               '</style>' +
               '<table>' +
               '<thead>' +
