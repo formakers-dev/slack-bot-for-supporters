@@ -245,14 +245,15 @@ const getCompletedList = (req, res) => {
               const result = '<tr>' + '<th>' + user.nickName + '</th>';
               return result + betaTests.map(betaTest => {
                   const isCompleted = betaTest.completedUserIds.includes(user.userId);
-                  return '<td' + (isCompleted ? '' : ' class="x"') + '>' + (isCompleted ? 'O' : 'X') + '</td>';
+                  return '<td class="content' + (isCompleted ? '"' : ' x"') + '>' + (isCompleted ? 'O' : 'X') + '</td>';
               }).join('') + '</tr>'
           });
           const response = '<style>' +
               'table { border-collapse: collapse; text-align: left; line-height: 1.5; margin : 20px 10px; }' +
               'th { padding: 5px; font-weight: bold; vertical-align: top; border: 1px solid #808080; }' +
               'td { padding: 5px; vertical-align: top; border: 1px solid #808080; }' +
-              'td.x { background-color: lightpink }' +
+              'td.content { text-align: center }' +
+              'td.x { background-color: #ffdede }' +
               '</style>' +
               '<table>' +
               '<thead>' +
