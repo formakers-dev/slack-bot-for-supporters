@@ -119,7 +119,7 @@ rtm.on('message', event => {
             "네! 안녕하세요! 🐶", "🐶 안녕하새오!", "🐶 멍멍! 반갑다멍!", ":wave: 안녕!", "안뇽! :wave:"
         ];
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
-    } else if (text.match(/고마워[요]?/) || text.match(/고맙[다|습니다|슴다]?/)) {
+    } else if (text.match(/고마워[요]?/) || text.match(/고맙[다|습니다|슴다]?/) || text.match(/[감사|ㄱㅅ]?/)) {
         const answers = [ "내가 더 고맙다멍! 🐶" ].concat(answer_thanks);
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);
     } else if (text.match(/[귀|기]여[워|웡|우|어][요]?/) || text.match(/[귀|기][욥|엽|요미]/)) {
