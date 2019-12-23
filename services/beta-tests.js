@@ -7,8 +7,9 @@ const getValidBetaTestSurveyLinks = () => {
     return BetaTests.aggregate([
         {
             $match: {
-                openDate: {$lte: currentTime},
-                closeDate: {$gte: currentTime},
+                openDate: { $lte: currentTime },
+                closeDate: { $gte: currentTime },
+                status: { $ne: "test" },
             }
         }, { $unwind: "$missions"}, { $unwind: "$missions.items" },
         {
