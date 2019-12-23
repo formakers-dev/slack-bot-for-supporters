@@ -29,12 +29,12 @@ const init = () => {
     agenda.on('ready', () => {
         console.log('agenda start!');
 
-        agenda.cancel({})
-            .then(numRemoved => {
-                console.log(`${numRemoved} jobs removed`);
-                return agenda.start();
-            })
-            .catch(err => console.error(err));
+        // agenda.cancel({})
+        //     .then(numRemoved => {
+        //         console.log(`${numRemoved} jobs removed`);
+        //         return agenda.start();
+        //     })
+        //     .catch(err => console.error(err));
     });
 };
 
