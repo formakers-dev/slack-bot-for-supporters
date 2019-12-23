@@ -4,6 +4,8 @@ const http = require('http');
 const port = require('./config').port;
 const db = require('./db');
 db.init();
+const agenda = require('./agenda');
+agenda.init();
 
 const rtmController = require('./controller/rtm');
 const slackController = require('./controller/slack');
