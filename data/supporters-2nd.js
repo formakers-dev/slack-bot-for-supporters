@@ -64,6 +64,10 @@ module.exports = [
         "nickName" : "메론빵"
     },
     {
+        "userId" : "google101662767155099710121",
+        "nickName" : "족제비와토끼"
+    },
+    {
         "userId" : "google105851479282303082720",
         "nickName" : "나로"
     },
@@ -148,6 +152,10 @@ module.exports = [
         "nickName" : "김진돌"
     },
     {
+        "userId" : "google107588723570529300215",
+        "nickName" : "휘조"
+    },
+    {
         "userId" : "google101439126013854277039",
         "nickName" : "이한승"
     },
@@ -210,5 +218,9 @@ module.exports = [
     {
         "userId" : "google112371319777311492934",
         "nickName" : "수연"
+    },
+    {
+        "userId" : "google106102942437689356857",
+        "nickName" : "홍익제원"
     }
 ];
