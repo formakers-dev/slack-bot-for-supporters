@@ -222,5 +222,9 @@ module.exports = [
     {
         "userId" : "google106102942437689356857",
         "nickName" : "홍익제원"
+    },
+    {
+        "userId" : "google116471190418596117446",
+        "nickName" : "람빅"
     }
 ];
