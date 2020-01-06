@@ -226,5 +226,13 @@ module.exports = [
     {
         "userId" : "google116471190418596117446",
         "nickName" : "람빅"
+    },
+    {
+        "userId" : "google103170792178997468997",
+        "nickName" : "FDL1700"
+    },
+    {
+        "userId" : "google111311516900051359869",
+        "nickName" : "zziwo"
     }
 ];
