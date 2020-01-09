@@ -52,6 +52,10 @@ module.exports = [
         "nickName" : "Rollingbor"
     },
     {
+        "userId" : "google114587651381026562175",
+        "nickName" : "tmdgns0791"
+    },
+    {
         "userId" : "google113863793634019411191",
         "nickName" : "달세하"
     },
@@ -176,10 +180,6 @@ module.exports = [
         "nickName" : "Statice"
     },
     {
-        "userId" : "google113972044941536463710",
-        "nickName" : "FDL1760"
-    },
-    {
         "userId" : "google114200606269809521074",
         "nickName" : "시랭"
     },
@@ -234,5 +234,9 @@ module.exports = [
     {
         "userId" : "google111311516900051359869",
         "nickName" : "zziwo"
+    },
+    {
+        "userId" : "google113972044941536463710",
+        "nickName" : "FDL1760"
     }
 ];
