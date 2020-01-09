@@ -105,10 +105,61 @@ const getOpenedBetaTests = () => {
         })
 };
 
+const getWeeklyDashboard = (activityName, currentWeek, lastWeek, isNotifyToAll) => {
+    let message;
+
+    if (currentWeek <= lastWeek) {
+        message = "*" + activityName + " 활동 " + currentWeek + "주차다멍!* :dog:\n";
+    } else {
+        message = "*" + activityName + " 활동이 종료되었다멍!* :dog:\n";
+    }
+
+    if (isNotifyToAll) {
+        message += "<!channel>\n";
+    }
+
+    if (currentWeek === 1) {
+        message += "드디어 첫 날이 밝았다멍! :clapping:\n\n" +
+            ":moneybag: 보상 2배 지급은 이번주에 오픈 되는 테스트 부터 시작이다멍!\n" +     // 변경여지(메타데이터)
+            ":scroll: 활동 종료일 까지 총 10회 이상 참여해주셔야 수료증을 받으실 수 있다멍!\n\n"; // 변경여지(메타데이터)
+    } else {
+        message += (currentWeek - 1) + "주차까지의 테스트 참여 현황을 공유한다멍!\n" +
+            ":point_right::skin-tone-2: <http://bit.ly/2MjV4Fl|내 참여 현황 보러가기>\n" +
+            "혹시 잘못 적혀있다면 부담없이 알려달라멍! :heart:\n\n";
+
+        if (currentWeek === Math.round(lastWeek/2)) {
+            message += "서포터즈 활동" + // 변경여지
+                "도 어느새 벌써 반이나 왔다멍!!!!!\n";
+        } else if (currentWeek === lastWeek) {
+            message += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n";
+        } else if (currentWeek > lastWeek) {
+            message += "다들 너무 고생 많았고 감사드린다멍!!!! :pray:\n" +
+                "여러분들의 열정적인 참여 잊지 못할 거다멍.....:sob:\n" +
+                lastWeek + "주 동안 많은 결실을 맺었길 바란다멍!\n\n"
+        }
+    }
+
+    if (currentWeek === 1) {
+        message += "앞으로 여러분들의";
+    } else if (currentWeek === lastWeek) {
+        message += "마지막 혼을 담아";
+    } else if (currentWeek > lastWeek) {
+        message += "활동은 끝났지만 포메스 테스트에는 계속 참여할 수 있다멍!\n심심할 때 한번씩 여러분의 "
+    } else {
+        message += "계속해서 여러분들의";
+    }
+
+    message += "게임 분석력을 뿜뿜 뽐내보라멍! :clapping:\n";
+    message += ":fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>";
+
+    return message;
+};
+
 module.exports = {
     getHelp,
     getSimpleAnswer,
     getGreeting,
     getSurveyLinks,
     getOpenedBetaTests,
+    getWeeklyDashboard,
 };

@@ -13,26 +13,32 @@ const agenda = new Agenda({
     }
 });
 
-agenda.define('notify opened betatests', async job => {
-    console.log('[job] notify opened betatests');
+agenda.define('notify weekly dashboard', job => {
+    console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
-    MessageController.getOpenedBetaTests()
-        .then(async (openedBetaTestsMsg) => {
-            const result = await web.chat.postMessage({
-                text: openedBetaTestsMsg.message,
-                channel: process.env.FORMAKERS_DEV_CHANNEL_ID,
-                as_user: true
-            });
+    const metadata = job.attrs.data;
+    const message = MessageController.getWeeklyDashboard(metadata.activityName, metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll);
 
-            openedBetaTestsMsg.comments.forEach(comment => {
-                web.chat.postMessage({
-                    text: comment,
-                    channel: result.channel,
-                    thread_ts: result.ts,
-                    as_user: true
-                });
-            });
-        }).catch(err =>  console.error(err));
+    console.log(message);
+
+    web.chat.postMessage({
+        text: message,
+        channel: metadata.channel,
+        as_user: true
+    });
+
+    job.remove();
+
+    if (metadata.currentWeek <= metadata.closeWeek) {
+        agenda.every(metadata.when, 'notify weekly dashboard', {
+            when: metadata.when,
+            channel: metadata.channel,
+            activityName: metadata.activityName,
+            currentWeek: metadata.currentWeek + 1,
+            closeWeek: metadata.closeWeek,
+            isNotifyToAll: metadata.isNotifyToAll,
+        });
+    }
 });
 
 const init = () => {
@@ -57,6 +63,14 @@ const init = () => {
         console.log('agenda start!');
 
         await agenda.start();
+        await agenda.now('notify weekly dashboard', {
+            when: '00 23 * * *',
+            channel: 'dev-slack-bot',
+            activityName: '포메스 서포터즈 2기',
+            currentWeek: 1,
+            closeWeek: 10,
+            isNotifyToAll: false,
+        });
         // await agenda.now('notify opened betatests');
         // agenda.cancel({})
         //     .then(numRemoved => {
