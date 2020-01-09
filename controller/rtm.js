@@ -94,7 +94,7 @@ rtm.on('message', event => {
                 betaTests.map(betaTest => {
                     const chat = "*🕹 테스트 제목 : " + betaTest.title + "*";
                     const missionsChat = betaTest.missionItems.map(missionItem => {
-                        return "👉🏻 미션 제목 : " + missionItem.title + "\n" + missionItem.action.replace("{email}", "포메스_가입_이메일을_적어주세요");
+                        return "👉🏻 미션 : <" + missionItem.action.replace("{email}", "포메스_가입_이메일을_적어주세요") + "|" + missionItem.title + ">";
                     }).join("\n\n");
                     return chat + "\n" + missionsChat;
                 }).forEach(missionLinksMessage => {
