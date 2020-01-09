@@ -7,7 +7,7 @@ db.init();
 const agenda = require('./agenda');
 agenda.init();
 
-const rtmController = require('./controller/rtm');
+const rtmController = require('./rtm');
 const slackController = require('./controller/slack');
 const groupController = require('./controller/group');
 
