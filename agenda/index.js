@@ -63,11 +63,13 @@ const init = () => {
         console.log('agenda start!');
 
         await agenda.start();
+
+        // Don't worry, It is a temporary code for test :-)
         await agenda.now('notify weekly dashboard', {
-            when: '00 23 * * *',
+            when: '00 14 * * *',
             channel: 'dev-slack-bot',
             activityName: '포메스 서포터즈 2기',
-            currentWeek: 1,
+            currentWeek: 2,
             closeWeek: 10,
             isNotifyToAll: false,
         });
