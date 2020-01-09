@@ -74,6 +74,29 @@ rtm.on('message', event => {
                     "\n담당자들한테 얼른 고쳐달라고 할게요! 조금만 기다려주세요🙏", event.channel);
                 console.log(reply)
             });
+    } else if ("[개발테스트] 진행중 테스트") {
+        // TODO : MessageController 리팩토링 필요
+        //  사실상 지금의 메세지컨트롤러가 메세지서비스가 되구...
+        //  api쏘는 것 자체가 컨트롤러가 되고...
+        //  rtm은 rtm의 라우팅 같은 느낌이야
+        // 임시 코드
+        MessageController.getOpenedBetaTests()
+            .then(async (openedBetaTestsMsg) => {
+                const result = await web.chat.postMessage({
+                    text: openedBetaTestsMsg.message,
+                    channel: event.channel,
+                    as_user: true
+                });
+
+                openedBetaTestsMsg.comments.forEach(comment => {
+                    web.chat.postMessage({
+                        text: comment,
+                        channel: result.channel,
+                        thread_ts: result.ts,
+                        as_user: true
+                    });
+                });
+            }).catch(err =>  console.error(err));
     } else {
         const answers = MessageController.getSimpleAnswer(text);
         rtm.sendMessage(answers[Math.floor(Math.random() * answers.length)], event.channel);

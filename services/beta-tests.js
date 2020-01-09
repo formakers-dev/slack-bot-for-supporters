@@ -41,6 +41,21 @@ const getValidBetaTestSurveyLinks = () => {
     ]);
 };
 
+const getValidBetaTests = () => {
+    const currentTime = new Date();
+
+    return BetaTests.find({
+            openDate: {$lte: currentTime},
+            closeDate: {$gte: currentTime},
+            status: {$ne: "test"},
+        },
+        {
+            _id: true,
+            title: true,
+            closeDate: true
+        })
+};
+
 const getCompletedList = (startDate, endDate) => {
     return BetaTests.aggregate([
         { $match: {$and: [
@@ -67,4 +82,5 @@ const getCompletedList = (startDate, endDate) => {
 module.exports = {
     getValidBetaTestSurveyLinks,
     getCompletedList,
+    getValidBetaTests,
 };

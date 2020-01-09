@@ -81,9 +81,34 @@ const getMissions = (betaTests) => {
     })
 };
 
+const getOpenedBetaTests = () => {
+    return BetaTestService.getValidBetaTests()
+        .then(betaTests => {
+            const message = "왈!왈! 현재 진행 중인 테스트를 알려드릴게요!😊" +
+                "\n\n:fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>" +
+                "\n👇🏻 테스트 정보는 댓글을 확인해주세요 👇🏻" +
+                "\n";
+
+            const currentDate = new Date();
+            const comments = betaTests.map(betaTest => {
+                    const dDay = Math.ceil((betaTest.closeDate - currentDate) / (1000 * 60 * 60 * 24));
+                    const dDayString = (dDay > 0 ? `D-${dDay}` : "오늘마감");
+                    const icon = (dDay > 2 ? "🕹" : "🚨");
+
+                    return icon + " [" + dDayString + "] " + betaTest.title;
+                });
+
+            return Promise.resolve({
+                message: message,
+                comments: comments,
+            })
+        })
+};
+
 module.exports = {
     getHelp,
     getSimpleAnswer,
     getGreeting,
-    getSurveyLinks
+    getSurveyLinks,
+    getOpenedBetaTests,
 };
