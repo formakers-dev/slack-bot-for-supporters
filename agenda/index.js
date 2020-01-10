@@ -17,13 +17,14 @@ agenda.define('notify weekly dashboard', async job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
     const metadata = job.attrs.data;
-    const messageBlocks = await MessageController.getWeeklyDashboard(metadata.activityName,
+    const resultMessage = await MessageController.getWeeklyDashboard(metadata.activityName,
         metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll, metadata.isShareBetaTests);
 
-    console.log(messageBlocks);
+    console.log(resultMessage.messageBlocks);
 
     web.chat.postMessage({
-        blocks: messageBlocks,
+        text: resultMessage.title,
+        blocks: resultMessage.messageBlocks,
         channel: metadata.channel,
         as_user: true
     });

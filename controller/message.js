@@ -110,7 +110,10 @@ const getOpenedBetaTests = () => {
 };
 
 const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyToAll, isShareBetaTests) => {
-    const messageBlocks = [];
+    const resultMessage = {
+        title: "",
+        messageBlocks: [],
+    };
 
     const titleSection = {
         type: "section",
@@ -126,7 +129,8 @@ const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyT
         titleSection.text.text = "*" + activityName + " 활동이 종료되었다멍!* :dog:\n";
     }
 
-    messageBlocks.push(titleSection);
+    resultMessage.title = titleSection.text.text;
+    resultMessage.messageBlocks.push(titleSection);
 
     const shareSection = {
         type: "section",
@@ -161,10 +165,10 @@ const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyT
         }
     }
 
-    messageBlocks.push(shareSection);
+    resultMessage.messageBlocks.push(shareSection);
 
     if (isShareBetaTests) {
-        messageBlocks.push({
+        resultMessage.messageBlocks.push({
             type: "section",
             text: {
                 type: "mrkdwn",
@@ -183,9 +187,9 @@ const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyT
         const betaTests = await BetaTestService.getValidBetaTests();
         betaTestsSections.text.text += getBetaTestsSummary(betaTests).join("\n");
 
-        messageBlocks.push({ type: "divider" });
-        messageBlocks.push(betaTestsSections);
-        messageBlocks.push({ type: "divider" });
+        resultMessage.messageBlocks.push({ type: "divider" });
+        resultMessage.messageBlocks.push(betaTestsSections);
+        resultMessage.messageBlocks.push({ type: "divider" });
     }
 
     const closingSection = {
@@ -209,9 +213,9 @@ const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyT
     closingSection.text.text += "게임 분석력을 뿜뿜 뽐내보라멍! :clapping:\n";
     closingSection.text.text += ":fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>";
 
-    messageBlocks.push(closingSection);
+    resultMessage.messageBlocks.push(closingSection);
 
-    return messageBlocks;
+    return resultMessage;
 };
 
 module.exports = {
