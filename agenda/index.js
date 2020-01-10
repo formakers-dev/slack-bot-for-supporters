@@ -13,16 +13,17 @@ const agenda = new Agenda({
     }
 });
 
-agenda.define('notify weekly dashboard', job => {
+agenda.define('notify weekly dashboard', async job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
     const metadata = job.attrs.data;
-    const message = MessageController.getWeeklyDashboard(metadata.activityName, metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll);
+    const messageBlocks = await MessageController.getWeeklyDashboard(metadata.activityName,
+        metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll, metadata.isShareBetaTests);
 
-    console.log(message);
+    console.log(messageBlocks);
 
     web.chat.postMessage({
-        text: message,
+        blocks: messageBlocks,
         channel: metadata.channel,
         as_user: true
     });
@@ -37,6 +38,7 @@ agenda.define('notify weekly dashboard', job => {
             currentWeek: metadata.currentWeek + 1,
             closeWeek: metadata.closeWeek,
             isNotifyToAll: metadata.isNotifyToAll,
+            isShareBetaTests: metadata.currentWeek !== metadata.closeWeek,
         });
     }
 });
@@ -72,6 +74,7 @@ const init = () => {
             currentWeek: 2,
             closeWeek: 10,
             isNotifyToAll: false,
+            isShareBetaTests: true,
         });
         // await agenda.now('notify opened betatests');
         // agenda.cancel({})

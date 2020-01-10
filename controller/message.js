@@ -81,6 +81,17 @@ const getMissions = (betaTests) => {
     })
 };
 
+const getBetaTestsSummary = (betaTests) => {
+    const currentDate = new Date();
+    return betaTests.map(betaTest => {
+        const dDay = Math.ceil((betaTest.closeDate - currentDate) / (1000 * 60 * 60 * 24));
+        const dDayString = (dDay > 0 ? `D-${dDay}` : "오늘마감");
+        const icon = (dDay > 2 ? "🕹" : "🚨");
+
+        return icon + " [" + dDayString + "] " + betaTest.title;
+    });
+};
+
 const getOpenedBetaTests = () => {
     return BetaTestService.getValidBetaTests()
         .then(betaTests => {
@@ -89,14 +100,7 @@ const getOpenedBetaTests = () => {
                 "\n👇🏻 테스트 정보는 댓글을 확인해주세요 👇🏻" +
                 "\n";
 
-            const currentDate = new Date();
-            const comments = betaTests.map(betaTest => {
-                    const dDay = Math.ceil((betaTest.closeDate - currentDate) / (1000 * 60 * 60 * 24));
-                    const dDayString = (dDay > 0 ? `D-${dDay}` : "오늘마감");
-                    const icon = (dDay > 2 ? "🕹" : "🚨");
-
-                    return icon + " [" + dDayString + "] " + betaTest.title;
-                });
+            const comments = getBetaTestsSummary(betaTests);
 
             return Promise.resolve({
                 message: message,
@@ -105,54 +109,109 @@ const getOpenedBetaTests = () => {
         })
 };
 
-const getWeeklyDashboard = (activityName, currentWeek, lastWeek, isNotifyToAll) => {
-    let message;
+const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyToAll, isShareBetaTests) => {
+    const messageBlocks = [];
+
+    const titleSection = {
+        type: "section",
+        text: {
+            type: "mrkdwn",
+            text: "",
+        }
+    };
 
     if (currentWeek <= lastWeek) {
-        message = "*" + activityName + " 활동 " + currentWeek + "주차다멍!* :dog:\n";
+        titleSection.text.text = "*" + activityName + " 활동 " + currentWeek + "주차다멍!* :dog:\n";
     } else {
-        message = "*" + activityName + " 활동이 종료되었다멍!* :dog:\n";
+        titleSection.text.text = "*" + activityName + " 활동이 종료되었다멍!* :dog:\n";
     }
 
+    messageBlocks.push(titleSection);
+
+    const shareSection = {
+        type: "section",
+        text: {
+            type: "mrkdwn",
+            text: "",
+        }
+    };
+
     if (isNotifyToAll) {
-        message += "<!channel>\n";
+        shareSection.text.text += "<!channel>\n";
     }
 
     if (currentWeek === 1) {
-        message += "드디어 첫 날이 밝았다멍! :clapping:\n\n" +
+        shareSection.text.text += "드디어 첫 날이 밝았다멍! :clapping:\n\n" +
             ":moneybag: 보상 2배 지급은 이번주에 오픈 되는 테스트 부터 시작이다멍!\n" +     // 변경여지(메타데이터)
             ":scroll: 활동 종료일 까지 총 10회 이상 참여해주셔야 수료증을 받으실 수 있다멍!\n\n"; // 변경여지(메타데이터)
     } else {
-        message += (currentWeek - 1) + "주차까지의 테스트 참여 현황을 공유한다멍!\n" +
+        shareSection.text.text += (currentWeek - 1) + "주차까지의 테스트 참여 현황을 공유한다멍!\n" +
             ":point_right::skin-tone-2: <http://bit.ly/2MjV4Fl|내 참여 현황 보러가기>\n" +
             "혹시 잘못 적혀있다면 부담없이 알려달라멍! :heart:\n\n";
 
         if (currentWeek === Math.round(lastWeek/2)) {
-            message += "서포터즈 활동" + // 변경여지
-                "도 어느새 벌써 반이나 왔다멍!!!!!\n";
+            shareSection.text.text += "서포터즈 활동" + // 변경여지
+                "도 어느새 벌써 반이나 왔다멍!!!!!\n\n";
         } else if (currentWeek === lastWeek) {
-            message += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n";
+            shareSection.text.text += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n\n";
         } else if (currentWeek > lastWeek) {
-            message += "다들 너무 고생 많았고 감사드린다멍!!!! :pray:\n" +
+            shareSection.text.text += "다들 너무 고생 많았고 감사드린다멍!!!! :pray:\n" +
                 "여러분들의 열정적인 참여 잊지 못할 거다멍.....:sob:\n" +
                 lastWeek + "주 동안 많은 결실을 맺었길 바란다멍!\n\n"
         }
     }
 
-    if (currentWeek === 1) {
-        message += "앞으로 여러분들의";
-    } else if (currentWeek === lastWeek) {
-        message += "마지막 혼을 담아";
-    } else if (currentWeek > lastWeek) {
-        message += "활동은 끝났지만 포메스 테스트에는 계속 참여할 수 있다멍!\n심심할 때 한번씩 여러분의 "
-    } else {
-        message += "계속해서 여러분들의";
+    messageBlocks.push(shareSection);
+
+    if (isShareBetaTests) {
+        messageBlocks.push({
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: "현재 진행중인 테스트는 다음과 같다멍!"
+            }
+        });
+
+        const betaTestsSections = {
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: "",
+            }
+        };
+
+        const betaTests = await BetaTestService.getValidBetaTests();
+        betaTestsSections.text.text += getBetaTestsSummary(betaTests).join("\n");
+
+        messageBlocks.push({ type: "divider" });
+        messageBlocks.push(betaTestsSections);
+        messageBlocks.push({ type: "divider" });
     }
 
-    message += "게임 분석력을 뿜뿜 뽐내보라멍! :clapping:\n";
-    message += ":fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>";
+    const closingSection = {
+        type: "section",
+        text: {
+            type: "mrkdwn",
+            text: "",
+        }
+    };
 
-    return message;
+    if (currentWeek === 1) {
+        closingSection.text.text += "앞으로 여러분들의";
+    } else if (currentWeek === lastWeek) {
+        closingSection.text.text += "마지막 혼을 담아";
+    } else if (currentWeek > lastWeek) {
+        closingSection.text.text += "활동은 끝났지만 포메스 테스트에는 계속 참여할 수 있다멍!\n심심할 때 한번씩 여러분의 "
+    } else {
+        closingSection.text.text += "계속해서 여러분들의";
+    }
+
+    closingSection.text.text += "게임 분석력을 뿜뿜 뽐내보라멍! :clapping:\n";
+    closingSection.text.text += ":fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>";
+
+    messageBlocks.push(closingSection);
+
+    return messageBlocks;
 };
 
 module.exports = {
