@@ -13,6 +13,41 @@ const agenda = new Agenda({
     }
 });
 
+const gracefulExit = cause => {
+    agenda.stop()
+        .then(() => {
+            console.log(`agenda stopped by ${cause}!`);
+            process.exit();
+        })
+};
+
+['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
+    process.on(signal, gracefulExit);
+});
+
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err);
+    gracefulExit('uncaught exception');
+});
+
+agenda.on('ready', () => {
+    console.log('agenda start!');
+
+    agenda.start();
+
+    // Don't worry, It is a temporary code for test :-)
+    agenda.now('notify weekly dashboard', {
+        when: '00 14 * * *',
+        channel: 'dev-slack-bot',
+        activityName: '포메스 서포터즈 2기',
+        groupName: 'supporters-2nd',
+        currentWeek: 2,
+        closeWeek: 10,
+        isNotifyToAll: false,
+        isShareBetaTests: true,
+    });
+});
+
 agenda.define('notify weekly dashboard', job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
@@ -48,40 +83,6 @@ agenda.define('notify weekly dashboard', job => {
 });
 
 const init = () => {
-    const gracefulExit = cause => {
-        agenda.stop()
-            .then(() => {
-                console.log(`agenda stopped by ${cause}!`);
-                process.exit();
-            })
-    };
-
-    ['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
-        process.on(signal, gracefulExit);
-    });
-
-    process.on('uncaughtException', err => {
-        console.error('Uncaught Exception:', err);
-        gracefulExit('uncaught exception');
-    });
-
-    agenda.on('ready', () => {
-        console.log('agenda start!');
-
-        agenda.start();
-
-        // Don't worry, It is a temporary code for test :-)
-        agenda.now('notify weekly dashboard', {
-            when: '00 14 * * *',
-            channel: 'dev-slack-bot',
-            activityName: '포메스 서포터즈 2기',
-            groupName: 'supporters-2nd',
-            currentWeek: 2,
-            closeWeek: 10,
-            isNotifyToAll: false,
-            isShareBetaTests: true,
-        });
-    });
 };
 
 module.exports = {init};
