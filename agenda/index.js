@@ -31,23 +31,6 @@ agenda.on('ready', () => {
     });
 });
 
-const gracefulExit = cause => {
-    agenda.stop()
-        .then(() => {
-            console.log(`agenda stopped by ${cause}!`);
-            process.exit();
-        })
-};
-
-['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
-    process.on(signal, gracefulExit);
-});
-
-process.on('uncaughtException', err => {
-    console.error('Uncaught Exception:', err);
-    gracefulExit('uncaught exception');
-});
-
 agenda.define('notify weekly dashboard', job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
@@ -83,6 +66,22 @@ agenda.define('notify weekly dashboard', job => {
 });
 
 const init = () => {
+    const gracefulExit = cause => {
+        agenda.stop()
+            .then(() => {
+                console.log(`agenda stopped by ${cause}!`);
+                process.exit();
+            })
+    };
+
+    ['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
+        process.on(signal, gracefulExit);
+    });
+
+    process.on('uncaughtException', err => {
+        console.error('Uncaught Exception:', err);
+        gracefulExit('uncaught exception');
+    });
 };
 
 module.exports = {init};
