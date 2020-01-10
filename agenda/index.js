@@ -17,7 +17,7 @@ agenda.define('notify weekly dashboard', async job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
     const metadata = job.attrs.data;
-    const resultMessage = await MessageController.getWeeklyDashboard(metadata.activityName,
+    const resultMessage = await MessageController.getWeeklyDashboard(metadata.activityName, metadata.groupName,
         metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll, metadata.isShareBetaTests);
 
     console.log(resultMessage.messageBlocks);
@@ -36,6 +36,7 @@ agenda.define('notify weekly dashboard', async job => {
             when: metadata.when,
             channel: metadata.channel,
             activityName: metadata.activityName,
+            groupName: metadata.groupName,
             currentWeek: metadata.currentWeek + 1,
             closeWeek: metadata.closeWeek,
             isNotifyToAll: metadata.isNotifyToAll,
@@ -72,6 +73,7 @@ const init = () => {
             when: '00 14 * * *',
             channel: 'dev-slack-bot',
             activityName: '포메스 서포터즈 2기',
+            groupName: 'supporters-2nd',
             currentWeek: 2,
             closeWeek: 10,
             isNotifyToAll: false,

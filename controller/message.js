@@ -109,7 +109,7 @@ const getOpenedBetaTests = () => {
         })
 };
 
-const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyToAll, isShareBetaTests) => {
+const getWeeklyDashboard = async (activityName, groupName, currentWeek, lastWeek, isNotifyToAll, isShareBetaTests) => {
     const resultMessage = {
         title: "",
         messageBlocks: [],
@@ -150,12 +150,11 @@ const getWeeklyDashboard = async (activityName, currentWeek, lastWeek, isNotifyT
             ":scroll: 활동 종료일 까지 총 10회 이상 참여해주셔야 수료증을 받으실 수 있다멍!\n\n"; // 변경여지(메타데이터)
     } else {
         shareSection.text.text += (currentWeek - 1) + "주차까지의 테스트 참여 현황을 공유한다멍!\n" +
-            ":point_right::skin-tone-2: <http://bit.ly/2MjV4Fl|내 참여 현황 보러가기>\n" +
+            ":point_right::skin-tone-2: <https://slack-bot-for-supporters.herokuapp.com/groups/" + groupName + "/completed-list|내 참여 현황 보러가기>\n" +
             "혹시 잘못 적혀있다면 부담없이 알려달라멍! :heart:\n\n";
 
         if (currentWeek === Math.round(lastWeek/2)) {
-            shareSection.text.text += "서포터즈 활동" + // 변경여지
-                "도 어느새 벌써 반이나 왔다멍!!!!!\n\n";
+            shareSection.text.text += activityName + " 활동도 어느새 벌써 반이나 왔다멍!!!!!\n\n";
         } else if (currentWeek === lastWeek) {
             shareSection.text.text += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n\n";
         } else if (currentWeek > lastWeek) {
