@@ -81,13 +81,6 @@ const init = () => {
             isNotifyToAll: false,
             isShareBetaTests: true,
         });
-        // await agenda.now('notify opened betatests');
-        // agenda.cancel({})
-        //     .then(numRemoved => {
-        //         console.log(`${numRemoved} jobs removed`);
-        //         return agenda.start();
-        //     })
-        //     .catch(err => console.error(err));
     });
 };
 
