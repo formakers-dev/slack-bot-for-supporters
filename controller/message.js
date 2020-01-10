@@ -152,16 +152,6 @@ const getWeeklyDashboard = async (activityName, groupName, currentWeek, lastWeek
         shareSection.text.text += (currentWeek - 1) + "주차까지의 테스트 참여 현황을 공유한다멍!\n" +
             ":point_right::skin-tone-2: <https://slack-bot-for-supporters.herokuapp.com/groups/" + groupName + "/completed-list|내 참여 현황 보러가기>\n" +
             "혹시 잘못 적혀있다면 부담없이 알려달라멍! :heart:\n\n";
-
-        if (currentWeek === Math.round(lastWeek/2)) {
-            shareSection.text.text += activityName + " 활동도 어느새 벌써 반이나 왔다멍!!!!!\n\n";
-        } else if (currentWeek === lastWeek) {
-            shareSection.text.text += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n\n";
-        } else if (currentWeek > lastWeek) {
-            shareSection.text.text += "다들 너무 고생 많았고 감사드린다멍!!!! :pray:\n" +
-                "여러분들의 열정적인 참여 잊지 못할 거다멍.....:sob:\n" +
-                lastWeek + "주 동안 많은 결실을 맺었길 바란다멍!\n\n"
-        }
     }
 
     resultMessage.messageBlocks.push(shareSection);
@@ -198,6 +188,16 @@ const getWeeklyDashboard = async (activityName, groupName, currentWeek, lastWeek
             text: "",
         }
     };
+
+    if (currentWeek === Math.round(lastWeek/2)) {
+        closingSection.text.text += activityName + " 활동도 어느새 벌써 반이나 왔다멍!!!!!\n";
+    } else if (currentWeek === lastWeek) {
+        closingSection.text.text += "어느새 마지막 주가 되었다멍... 시간이 참 빠르다멍멍.....:sob:\n";
+    } else if (currentWeek > lastWeek) {
+        closingSection.text.text += "다들 너무 고생 많았고 감사드린다멍!!!! :pray:\n" +
+            "여러분들의 열정적인 참여 잊지 못할 거다멍.....:sob:\n" +
+            lastWeek + "주 동안 많은 결실을 맺었길 바란다멍!\n\n"
+    }
 
     if (currentWeek === 1) {
         closingSection.text.text += "앞으로 여러분들의";

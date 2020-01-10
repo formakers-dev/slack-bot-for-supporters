@@ -41,7 +41,7 @@ agenda.on('ready', () => {
         channel: 'dev-slack-bot',
         activityName: '포메스 서포터즈 2기',
         groupName: 'supporters-2nd',
-        currentWeek: 5,
+        currentWeek: 4,
         closeWeek: 10,
         isNotifyToAll: false,
         isShareBetaTests: true,
