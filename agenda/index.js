@@ -13,23 +13,6 @@ const agenda = new Agenda({
     }
 });
 
-const gracefulExit = cause => {
-    agenda.stop()
-        .then(() => {
-            console.log(`agenda stopped by ${cause}!`);
-            process.exit();
-        })
-};
-
-['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
-    process.on(signal, gracefulExit);
-});
-
-process.on('uncaughtException', err => {
-    console.error('Uncaught Exception:', err);
-    gracefulExit('uncaught exception');
-});
-
 agenda.on('ready', () => {
     console.log('agenda start!');
 
@@ -46,6 +29,23 @@ agenda.on('ready', () => {
         isNotifyToAll: false,
         isShareBetaTests: true,
     });
+});
+
+const gracefulExit = cause => {
+    agenda.stop()
+        .then(() => {
+            console.log(`agenda stopped by ${cause}!`);
+            process.exit();
+        })
+};
+
+['exit', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => {
+    process.on(signal, gracefulExit);
+});
+
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err);
+    gracefulExit('uncaught exception');
 });
 
 agenda.define('notify weekly dashboard', job => {
