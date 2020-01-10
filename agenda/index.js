@@ -59,13 +59,13 @@ const init = () => {
         gracefulExit('uncaught exception');
     });
 
-    agenda.on('ready', async () => {
+    agenda.on('ready', () => {
         console.log('agenda start!');
 
-        await agenda.start();
+        agenda.start();
 
         // Don't worry, It is a temporary code for test :-)
-        await agenda.now('notify weekly dashboard', {
+        agenda.now('notify weekly dashboard', {
             when: '00 14 * * *',
             channel: 'dev-slack-bot',
             activityName: '포메스 서포터즈 2기',
