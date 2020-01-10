@@ -13,36 +13,38 @@ const agenda = new Agenda({
     }
 });
 
-agenda.define('notify weekly dashboard', async job => {
+agenda.define('notify weekly dashboard', job => {
     console.log('[job] notify weekly dashboard\ndata=', JSON.stringify(job.attrs.data));
 
     const metadata = job.attrs.data;
-    const resultMessage = await MessageController.getWeeklyDashboard(metadata.activityName, metadata.groupName,
-        metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll, metadata.isShareBetaTests);
 
-    console.log(resultMessage.messageBlocks);
+    MessageController.getWeeklyDashboard(metadata.activityName, metadata.groupName,
+        metadata.currentWeek, metadata.closeWeek, metadata.isNotifyToAll, metadata.isShareBetaTests)
+        .then(resultMessage => {
+            console.log(resultMessage.messageBlocks);
 
-    web.chat.postMessage({
-        text: resultMessage.title,
-        blocks: resultMessage.messageBlocks,
-        channel: metadata.channel,
-        as_user: true
-    });
+            web.chat.postMessage({
+                text: resultMessage.title,
+                blocks: resultMessage.messageBlocks,
+                channel: metadata.channel,
+                as_user: true
+            });
 
-    job.remove();
+            job.remove();
 
-    if (metadata.currentWeek <= metadata.closeWeek) {
-        agenda.every(metadata.when, 'notify weekly dashboard', {
-            when: metadata.when,
-            channel: metadata.channel,
-            activityName: metadata.activityName,
-            groupName: metadata.groupName,
-            currentWeek: metadata.currentWeek + 1,
-            closeWeek: metadata.closeWeek,
-            isNotifyToAll: metadata.isNotifyToAll,
-            isShareBetaTests: metadata.currentWeek !== metadata.closeWeek,
-        });
-    }
+            if (metadata.currentWeek <= metadata.closeWeek) {
+                agenda.every(metadata.when, 'notify weekly dashboard', {
+                    when: metadata.when,
+                    channel: metadata.channel,
+                    activityName: metadata.activityName,
+                    groupName: metadata.groupName,
+                    currentWeek: metadata.currentWeek + 1,
+                    closeWeek: metadata.closeWeek,
+                    isNotifyToAll: metadata.isNotifyToAll,
+                    isShareBetaTests: metadata.currentWeek !== metadata.closeWeek,
+                });
+            }
+        }).catch(err => console.error(err));
 });
 
 const init = () => {
