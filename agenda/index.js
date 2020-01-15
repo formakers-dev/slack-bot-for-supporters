@@ -12,10 +12,10 @@ const agenda = new Agenda({
     }
 });
 
-agenda.on('ready', () => {
+agenda.on('ready', async () => {
     console.log('agenda start!');
 
-    agenda.start();
+    await agenda.start();
 });
 
 agenda.define('notify weekly dashboard', job => {
