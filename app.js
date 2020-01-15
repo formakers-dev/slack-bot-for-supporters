@@ -20,6 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/', rtmController.listen);
 app.get('/channels/:channel/members', slackController.getMembersInChannel);
 app.get('/groups/:group/completed-list', groupController.getCompletedList);
+app.post('/agenda/job', (req, res) => {
+    agenda.scheduleJob(req.body);
+    res.sendStatus(200);
+});
 
 http.createServer(app).listen(port, () => {
     console.log('Express App on http port ' + port);
