@@ -36,14 +36,15 @@ agenda.define('notify weekly dashboard', job => {
                 as_user: true
             });
 
-            job.remove();
-
+            return job.remove();
+        })
+        .then(() => {
             if (metadata.currentWeek <= metadata.closeWeek) {
                 agenda.every(metadata.when, jobData.name, {
                     name: jobData.name,
                     data: {
                         when: metadata.when,
-                            channel: metadata.channel,
+                        channel: metadata.channel,
                         activityName: metadata.activityName,
                         groupName: metadata.groupName,
                         currentWeek: metadata.currentWeek + 1,
