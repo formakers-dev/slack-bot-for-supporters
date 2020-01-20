@@ -52,6 +52,11 @@ const getCompletedList = (req, res) => {
               '<strong>📝 포메스 서포터즈 2기 테스트 참여 현황</strong>' +
               ' - ⏰ ' + currentTime.getFullYear() + '년 ' + currentTime.getMonth() + '월 ' + currentTime.getDate() + '일 '
               + currentTime.getHours() + '시 ' + currentTime.getMinutes() + '분 ' + currentTime.getSeconds() + '초 기준' +
+              '<br/>' +
+              '<br/><strong>* [서포터즈 수료 여부 관련 주의 사항]</strong>' +
+              '<br/> 1. 불성실 응답 참여를 제외하는 재카운팅 후, 최종 참여 여부가 달라질 수 있습니다.' +
+              '<br/> 2. 불성실 응답 참여가 제외 된 최종본은 서포터즈 활동 종료 후 파일로 공유드릴 예정입니다.' +
+              '<br/> 3. 참여여부에 O로 표시되어 있으나 보상을 받지 못하셨다면, 불성실 응답자일 가능성이 있습니다. (불성실 응답 : 응답길이 30자 이하)' +
               '<table>' +
               '<thead>' +
               '<tr>' +
