@@ -50,7 +50,7 @@ const getCompletedList = (req, res) => {
               '</style>' +
               '<body>' +
               '<strong>📝 포메스 서포터즈 2기 테스트 참여 현황</strong>' +
-              ' - ⏰ ' + currentTime.getFullYear() + '년 ' + currentTime.getMonth() + '월 ' + currentTime.getDate() + '일 '
+              ' - ⏰ ' + currentTime.getFullYear() + '년 ' + (currentTime.getMonth() + 1) + '월 ' + currentTime.getDate() + '일 '
               + currentTime.getHours() + '시 ' + currentTime.getMinutes() + '분 ' + currentTime.getSeconds() + '초 기준' +
               '<br/>' +
               '<br/><strong>* [서포터즈 수료 여부 관련 주의 사항]</strong>' +
