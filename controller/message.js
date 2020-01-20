@@ -31,7 +31,7 @@ const getHelp = () => {
         "\n" + config.triggerName + " 사용법을 알려드릴게요! 🤗" +
         "\n" +
         "\n1️⃣ 지금처럼 제가 필요하실땐 `" + config.triggerName + "` 이라고 불러주세요." +
-        "\n2️⃣ 현재 지원하는 명령어는 다음과 같아요 : `도움말`, `테스트 링크`" +
+        "\n2️⃣ 현재 지원하는 명령어는 다음과 같아요 : `도움말`, `테스트 링크`, `테스트 목록`" +
         "\n        저를 불러주시면서 이 명령어들을 같이 적어주시면 되어요!" +
         "\n        💬 예시 : `" + config.triggerName + "아 테스트 링크 알려줘`, " +
         "`" + config.triggerName + " 도움말`, " +
@@ -92,21 +92,52 @@ const getBetaTestsSummary = (betaTests) => {
     });
 };
 
-const getOpenedBetaTests = () => {
-    return BetaTestService.getValidBetaTests()
-        .then(betaTests => {
-            const message = "왈!왈! 현재 진행 중인 테스트를 알려드릴게요!😊" +
-                "\n\n:fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>" +
-                "\n👇🏻 테스트 정보는 댓글을 확인해주세요 👇🏻" +
-                "\n";
+const getOpenedBetaTests = async (isIncludedFomesLink) => {
+    const resultMessage = {
+        title: "",
+        messageBlocks: [],
+    };
 
-            const comments = getBetaTestsSummary(betaTests);
+    resultMessage.title = "현재 진행중인 테스트는 다음과 같다멍!";
+    resultMessage.messageBlocks.push({
+        type: "section",
+        text: {
+            type: "mrkdwn",
+            text: resultMessage.title
+        }
+    });
 
-            return Promise.resolve({
-                message: message,
-                comments: comments,
-            })
-        })
+    const betaTestsSections = {
+        type: "section",
+        text: {
+            type: "mrkdwn",
+            text: "",
+        }
+    };
+
+    const betaTests = await BetaTestService.getValidBetaTests();
+    betaTestsSections.text.text += getBetaTestsSummary(betaTests).join("\n");
+
+    resultMessage.messageBlocks.push({type: "divider"});
+    resultMessage.messageBlocks.push(betaTestsSections);
+    resultMessage.messageBlocks.push({type: "divider"});
+
+    if (isIncludedFomesLink) {
+        const closingSection = {
+            type: "section",
+            text: {
+                type: "mrkdwn",
+                text: "",
+            }
+        };
+
+        closingSection.text.text += "그럼 게임 테스트 참여하러 가볼까요?! :woman-running::runner:\n";
+        closingSection.text.text += ":fomes: <fomes://launch?action=main|포메스 테스트 참여하러 가기! (모바일에서 클릭해주세요)>";
+
+        resultMessage.messageBlocks.push(closingSection);
+    }
+
+    return resultMessage;
 };
 
 const getWeeklyDashboard = async (activityName, groupName, currentWeek, lastWeek, isNotifyToAll, isShareBetaTests) => {
@@ -157,28 +188,8 @@ const getWeeklyDashboard = async (activityName, groupName, currentWeek, lastWeek
     resultMessage.messageBlocks.push(shareSection);
 
     if (isShareBetaTests) {
-        resultMessage.messageBlocks.push({
-            type: "section",
-            text: {
-                type: "mrkdwn",
-                text: "현재 진행중인 테스트는 다음과 같다멍!"
-            }
-        });
-
-        const betaTestsSections = {
-            type: "section",
-            text: {
-                type: "mrkdwn",
-                text: "",
-            }
-        };
-
-        const betaTests = await BetaTestService.getValidBetaTests();
-        betaTestsSections.text.text += getBetaTestsSummary(betaTests).join("\n");
-
-        resultMessage.messageBlocks.push({ type: "divider" });
-        resultMessage.messageBlocks.push(betaTestsSections);
-        resultMessage.messageBlocks.push({ type: "divider" });
+        const blocks = await getOpenedBetaTests(false);
+        resultMessage.messageBlocks = resultMessage.messageBlocks.concat(blocks.messageBlocks);
     }
 
     const closingSection = {
