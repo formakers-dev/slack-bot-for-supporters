@@ -52,7 +52,7 @@ rtm.on('message', event => {
 
     if (text.includes("도움말")) {
         rtm.sendMessage(MessageController.getHelp(), event.channel);
-    } else if (text.includes("테스트 링크")) {
+    } else if (text.match(/테스트[ ]?링크/g)) {
         MessageController.getSurveyLinks()
             .then(async surveyLinks => {
                 const reply = await rtm.sendMessage(surveyLinks.message, event.channel);
@@ -74,7 +74,7 @@ rtm.on('message', event => {
                     "\n담당자들한테 얼른 고쳐달라고 할게요! 조금만 기다려주세요🙏", event.channel);
                 console.log(reply)
             });
-    // } else if ("[개발테스트] 진행중 테스트") {
+    // } else if (text.includes("[개발테스트] 진행중 테스트")) {
     //     // TODO : MessageController 리팩토링 필요
     //     //  사실상 지금의 메세지컨트롤러가 메세지서비스가 되구...
     //     //  api쏘는 것 자체가 컨트롤러가 되고...
