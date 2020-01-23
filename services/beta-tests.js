@@ -63,6 +63,7 @@ const getCompletedList = (startDate, endDate) => {
                     { closeDate: { $gte: startDate } },
                     { closeDate: { $lte: endDate } },
                     { title: {$regex: '게임 테스트'} },
+                    { status: { $ne: "test" } },
                 ] }
         },
         { $unwind: "$missions" },
