@@ -76,7 +76,7 @@ const getCompletedList = (startDate, endDate) => {
                 completedUserIds: {$push: "$missions.items.completedUserIds"}
             }
         },
-        { $sort: { closeDate: 1 } }
+        { $sort: { closeDate: 1, _id: 1 } }
     ])
 };
 
