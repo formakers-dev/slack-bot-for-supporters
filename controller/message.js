@@ -85,6 +85,7 @@ const getBetaTestsSummary = (betaTests) => {
     const currentDate = new Date();
     return betaTests.map(betaTest => {
         const dDay = Math.ceil((betaTest.closeDate - currentDate) / (1000 * 60 * 60 * 24));
+        console.log('dDay=', dDay)
         const dDayString = (dDay > 0 ? `D-${dDay}` : "오늘마감");
         const icon = (dDay > 2 ? "🕹" : "🚨");
 

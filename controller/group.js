@@ -1,3 +1,4 @@
+const moment = require('moment');
 const BetaTestService = require('../services/beta-tests');
 
 const getCompletedList = (req, res) => {
@@ -19,7 +20,7 @@ const getCompletedList = (req, res) => {
 
   BetaTestService.getCompletedList(startDate, endDate)
       .then(betaTests => {
-          const currentTime = new Date();
+          const currentTime = moment.tz('Asia/Seoul').format("YYYY년 MM월 DD일 HH시 mm분 ss초");
           betaTests = betaTests.map(betaTest => {
               betaTest.completedUserIds = betaTest.completedUserIds.reduce((result, userIds) => {
                   return result.filter(ele => userIds.includes(ele));
@@ -50,8 +51,7 @@ const getCompletedList = (req, res) => {
               '</style>' +
               '<body>' +
               '<strong>📝 포메스 서포터즈 2기 테스트 참여 현황</strong>' +
-              ' - ⏰ ' + currentTime.getFullYear() + '년 ' + (currentTime.getMonth() + 1) + '월 ' + currentTime.getDate() + '일 '
-              + currentTime.getHours() + '시 ' + currentTime.getMinutes() + '분 ' + currentTime.getSeconds() + '초 기준' +
+              ' - ⏰ ' + currentTime +
               '<br/>' +
               '<br/><strong>* [서포터즈 수료 여부 관련 주의 사항]</strong>' +
               '<br/> 1. 불성실 응답 여부는 반영이 되지 않은 현황표입니다.' +
