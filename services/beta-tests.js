@@ -59,9 +59,8 @@ const getValidBetaTests = () => {
 const getCompletedList = (startDate, endDate) => {
     return BetaTests.aggregate([
         { $match: {$and: [
-                    { openDate: { $lte: new Date() } },
                     { closeDate: { $gte: startDate } },
-                    { closeDate: { $lte: endDate } },
+                    { openDate: { $lte: endDate } },
                     { title: {$regex: '게임 테스트'} },
                     { status: { $ne: "test" } },
                 ] }
