@@ -56,6 +56,7 @@ rtm.on('message', event => {
     } else if (text.match(/테스트[ ]?링크/g)) {
         const currentDate = new Date();
         const activeChannelIds = channels.filter(channel => channel.active && (channel.active.startDate < currentDate && currentDate < channel.active.endDate)).map(channel => channel.id);
+        console.log("currentData: ", currentDate, ", activeChannelIds", activeChannelIds);
 
         if (activeChannelIds.includes(event.channel)) {
             MessageController.getSurveyLinks()
