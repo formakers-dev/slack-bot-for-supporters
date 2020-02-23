@@ -37,7 +37,7 @@ const channels = {
             type: "private",
             active: {
                 startDate: new Date("2019-12-15T15:00:00Z"),
-                endDate: new Date("2020-02-23T14:59:99Z"),
+                endDate: new Date("2020-02-23T15:00:00Z"),
             }
         }
     ],
